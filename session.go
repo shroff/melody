@@ -89,6 +89,7 @@ loop:
 			}
 
 			if msg.t == websocket.CloseMessage {
+				s.conn.Close()
 				break loop
 			}
 

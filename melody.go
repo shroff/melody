@@ -276,13 +276,7 @@ func (m *Melody) BroadcastBinaryOthers(msg []byte, s *Session) error {
 
 // Close closes the melody instance and all connected sessions.
 func (m *Melody) Close() error {
-	if m.hub.closed() {
-		return errors.New("melody instance is already closed")
-	}
-
-	m.hub.exit <- &envelope{t: websocket.CloseMessage, msg: []byte{}}
-
-	return nil
+	return m.CloseWithMsg([]byte{})
 }
 
 // CloseWithMsg closes the melody instance with the given close payload and all connected sessions.
@@ -292,7 +286,7 @@ func (m *Melody) CloseWithMsg(msg []byte) error {
 		return errors.New("melody instance is already closed")
 	}
 
-	m.hub.exit <- &envelope{t: websocket.CloseMessage, msg: msg}
+	m.hub.exit <- msg
 
 	return nil
 }
